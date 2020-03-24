@@ -10,13 +10,14 @@ Node::Node(){ // constructor
     right = NULL;
   left = NULL;
   //pdata = NULL;
+  (*color) = 0;
 }
 Node::~Node(){ // destructor
 
   right = NULL;
    left = NULL;
   data = NULL;
-  
+  color = NULL;
 }
 void Node::setRight(Node* inputRight){ // setter Right
   right = inputRight;
@@ -35,4 +36,10 @@ void Node::setData(int* inputData){ // setter data
 }
 int* Node::getData(){ // getter data
   return data;
+}
+int* Node::getColor(){
+  return color;
+}
+void Node::setColor(int* c){
+  (*color) = (*c);
 }

@@ -1,9 +1,23 @@
 #include <iostream>
+//#include <conio.h>
 //#include <cstdlib>
+//HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+//SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+//#include <stdlib.h>
+
 #include<cstring>
 #include<fstream>
 #include "Node.h"
 using namespace std;
+//void FixTree(Node* n);
+Node* getParent(Node* header, Node* n, Node* Parent);
+void FixTree(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent);
+//Node* getParent(Node* header, Node* n, Node* Parent);
+Node* getGrandParent(Node* header, Node* n, Node* GrandParent);
+Node* getUncle(Node* header, Node* n, Node* Uncle);
+//Node* getUncle(Node* n);
+//Node* getParent(Node* n);
+//Node* getGrandParent(Node* n);
 int* Parce(char* input, int* index, int* counterOne, int* wordCounter, int* parced); // functions
 void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header);
 void Add(Node* header, Node* add);
@@ -14,7 +28,10 @@ void Print(Node* header, int length, int count, int i);
 void Search(Node* header, int* searchData, bool* exists);
 void maxSize(char* input, int* size);
 Node* getRightMost(Node* header);
+
 int main(){ // initialization of variables
+  //HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+  //SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
   char* inputType = new char[20];
   char* input = new char[500];
   char* FileName = new char[20];
@@ -42,6 +59,9 @@ int main(){ // initialization of variables
   int* skip = new int;
   (*skip) = 0;
   int* special = new int;
+  Node* Parent = new Node;
+  Node* Uncle = new Node;
+  Node* GrandParent = new Node;
   /*
   int* ones = new int;
   int* twos = new int;
@@ -91,6 +111,9 @@ int main(){ // initialization of variables
     (*two).setData(Parce(additionInput, index, counterOne, wordCounter, parced));
     //cout << "added data" << (*(*two).getData()) << endl;
     Add(header, two);
+    cout << (*(*getParent(header, two, Parent)).getData()) << endl;
+    cout << "there" << endl;
+    FixTree(header, two, getUncle(header, two, Uncle), getGrandParent(header, two, GrandParent), getParent(header, two, Parent));
     cout << "Added" << endl;
   }
     if(strcmp(inputFunction, "DELETE") == 0){ // delete function that deletes a node form tree
@@ -192,12 +215,19 @@ void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* 
   // cout << "build tree" << endl;
   // cout << (*size) << endl;
   // Node* header = new Node;
+  int* RED = new int;
+  (*RED) = 0;
+  int* BLACK = new int;
+  (*BLACK) = 1;
   (*header).setData(Parce(input, index, counterOne, wordCounter, parced)); // creates the head
+  (*header).setColor(BLACK);
   (*index)++; 
   //cout << "head data" << (*(*header).getData()) << endl;
   do{
     Node* one = new Node;
     (*one).setData(Parce(input, index, counterOne, wordCounter, parced)); // creates the new node
+    
+    //(*one).setColor(BLACK);
     //cout << "data" << (*(*one).getData()) << endl;
     Add(header, one); // adds the new node
     (*index)++;
@@ -401,7 +431,14 @@ void Print(Node* header, int length, int count, int i){ // this funciton prints 
     cout << "    ";
     count--;
   }
-  cout << (*(*header).getData()) << endl;
+  //textcolor(RED);
+  //system("Color 7C");
+  if((*(*header).getColor()) == 0){
+    cout << (*(*header).getData()) << "R" << endl;
+  }
+  else{
+    cout << (*(*header).getData()) << "B" << endl;
+  }
   //cout << sortedHeap[i-1 << endl; // print current with some number of idenetation
   // if(left <= length && (*header).getLeft() != NULL){ // left child exists so recurse
       if((*header).getLeft() != NULL){ // left child exists so recurse
@@ -443,3 +480,56 @@ Node* getRightMost(Node* header){
     getRightMost((*header).getRight());
   }
 }
+void FixTree(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent){
+  cout << "here" << endl;
+  cout << (*(*n).getData()) << endl;
+  //cout << (*(*Parent).getData()) << endl;
+  //cout << (*(*Parent).getColor()) << endl;
+  cout << (*(*Parent).getData()) << endl;
+  int* RED = new int;
+  (*RED) = 0;
+  int* BLACK = new int;
+  (*BLACK) = 1;
+  if(Parent != NULL && (*(*Parent).getColor()) == (*RED)){
+      cout << "here1" << endl;
+    (*n).setColor(BLACK);
+    return;
+  }
+  if(Parent != NULL && (*(*Parent).getColor()) == (*BLACK)){
+    //(*n).setColor(BLACK);
+      cout << "here2" << endl;
+    return;
+  }
+}
+Node* getUncle(Node* header, Node* n, Node* Uncle){
+  return Uncle;
+}
+Node* getParent(Node* header, Node* n, Node* Parent){
+  // if((*(*n).getData()) == )){ // THIS IS THE NODE
+  if(header == n){
+  //	 (*exists) = true;
+    cout << "here" << endl;
+    cout << (*(*Parent).getData()) << endl;
+    return Parent;
+    }
+
+  if((*header).getRight() != NULL && (*(*n).getData()) > (*(*header).getData())){ // not the node search rihgt
+    cout << "here1" << endl;
+    getParent((*header).getRight(), n, header);
+       }
+  /*
+  if((*(*header).getData()) == (*searchData)){
+	 (*exists) = true;
+       }
+  */
+  if((*header).getLeft() != NULL && (*(*n).getData()) <= (*(*header).getData())){ // not the node so search left
+    cout << "here2" << endl;
+    getParent((*header).getLeft(), n, header);
+       }
+  //cout << "herez" << endl;
+  //return NULL;
+}
+Node* getGrandParent(Node* header, Node* n, Node* GrandParent){
+  return GrandParent;
+}
+

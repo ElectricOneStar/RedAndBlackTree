@@ -1,5 +1,5 @@
 /*
-Header Node file by Andrew Thomas 3/19/20. This is a node with a right and left node and data with it
+11;rgb:0000/0000/0000Header Node file by Andrew Thomas 3/19/20. This is a node with a right and left node and data with it
  */
 #ifndef NODE_H
 #define NODE_H
@@ -15,12 +15,15 @@ class Node{
   void setRight(Node* inputRight); // setters
   void setLeft(Node* inputLeft);
   void setData(int* inputData);
+  void setColor(int* c);
   Node* getRight(); // getters
   Node* getLeft();
   int* getData();
+  int* getColor();
 private: // right left and data storage
   Node* right;
   Node* left;
   int* data = new int;
+  int* color = new int;
 };
 #endif
