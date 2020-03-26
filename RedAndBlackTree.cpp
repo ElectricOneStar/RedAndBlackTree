@@ -1,3 +1,6 @@
+/*
+Citation: https://en.wikipedia.org/wiki/Red%E2%80%93black_tree
+  */
 #include <iostream>
 //#include <conio.h>
 //#include <cstdlib>
@@ -10,11 +13,12 @@
 #include "Node.h"
 using namespace std;
 //void FixTree(Node* n);
-Node* getParent(Node* header, Node* n, Node* Parent);
+void getParent(Node* header, Node* n, Node* Parent, Node* ActualParent);
 void FixTree(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent);
 //Node* getParent(Node* header, Node* n, Node* Parent);
-Node* getGrandParent(Node* header, Node* n, Node* GrandParent);
-Node* getUncle(Node* header, Node* n, Node* Uncle);
+void getGrandParent(Node* header, Node* n, Node* GrandParent, Node* Parent, Node* ActualGrandParent);
+//void getUncle(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent);
+void getUncle(Node* GrandParent, Node* Parent, Node* ActualUncle);
 //Node* getUncle(Node* n);
 //Node* getParent(Node* n);
 //Node* getGrandParent(Node* n);
@@ -32,6 +36,9 @@ Node* getRightMost(Node* header);
 int main(){ // initialization of variables
   //HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   //SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
+  Node* ActualGrandParent = new Node;
+  Node* ActualUncle = new Node;
+  Node* ActualParent = new Node;
   char* inputType = new char[20];
   char* input = new char[500];
   char* FileName = new char[20];
@@ -110,10 +117,20 @@ int main(){ // initialization of variables
     Node* two = new Node; // creates the new node
     (*two).setData(Parce(additionInput, index, counterOne, wordCounter, parced));
     //cout << "added data" << (*(*two).getData()) << endl;
+    // cout
+    //  cout << (*(*getParent(header, two, Parent)).getData()) << endl;
     Add(header, two);
-    cout << (*(*getParent(header, two, Parent)).getData()) << endl;
-    cout << "there" << endl;
-    FixTree(header, two, getUncle(header, two, Uncle), getGrandParent(header, two, GrandParent), getParent(header, two, Parent));
+    getParent(header, two, Parent, ActualParent);
+    getGrandParent(header,  two,  GrandParent, ActualParent, ActualGrandParent);
+    getUncle(ActualGrandParent, ActualParent, ActualUncle);
+    // cout << (*(*ActualParent).getData()) << endl;
+	//cout << "why" << endl;
+    // }
+      //cout << (*(*getParent(header, two, Parent)).getData()) << endl;
+    //cout << (*getParent(header, two, Parent).getData()) << endl;
+    //cout << "there" << endl;
+    FixTree(header, two, ActualUncle, ActualGrandParent, ActualParent);
+    //FixTree(header, two, getUncle(header, two, Uncle), getGrandParent(header, two, GrandParent), getParent(header, two, Parent));
     cout << "Added" << endl;
   }
     if(strcmp(inputFunction, "DELETE") == 0){ // delete function that deletes a node form tree
@@ -480,30 +497,69 @@ Node* getRightMost(Node* header){
     getRightMost((*header).getRight());
   }
 }
+
+void getParent(Node* header, Node* n, Node* Parent, Node* ActualParent){
+  // if((*(*n).getData()) == )){ // THIS IS THE NODE
+  if(header == n){
+  //	 (*exists) = true;
+    // cout << "here" << endl;
+    cout << (*(*Parent).getData()) << endl;
+    (*ActualParent) = (*Parent);
+    //return Parent;
+    }
+
+  if((*header).getRight() != NULL && (*(*n).getData()) > (*(*header).getData())){ // not the node search rihgt
+    //cout << "here1" << endl;
+    getParent((*header).getRight(), n, header, ActualParent);
+       }
+  /*
+  if((*(*header).getData()) == (*searchData)){
+	 (*exists) = true;
+       }
+  */
+  if((*header).getLeft() != NULL && (*(*n).getData()) <= (*(*header).getData())){ // not the node so search left
+    //cout << "here2" << endl;
+    getParent((*header).getLeft(), n, header, ActualParent);
+       }
+  //cout << "herez" << endl;
+  //return NULL;
+}
 void FixTree(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent){
-  cout << "here" << endl;
-  cout << (*(*n).getData()) << endl;
+  // cout << "here" << endl;
+  //cout << (*(*n).getData()) << endl;
   //cout << (*(*Parent).getData()) << endl;
   //cout << (*(*Parent).getColor()) << endl;
-  cout << (*(*Parent).getData()) << endl;
+  // cout << (*(*Parent).getData()) << endl;
+  if(Parent == NULL){
+    // cout << "why" << endl;
+  }
   int* RED = new int;
   (*RED) = 0;
   int* BLACK = new int;
   (*BLACK) = 1;
-  if(Parent != NULL && (*(*Parent).getColor()) == (*RED)){
-      cout << "here1" << endl;
-    (*n).setColor(BLACK);
+  if(Parent == NULL){
+    //  cout << "here1" << endl;
+       (*n).setColor(BLACK);
     return;
   }
   if(Parent != NULL && (*(*Parent).getColor()) == (*BLACK)){
     //(*n).setColor(BLACK);
-      cout << "here2" << endl;
+    //cout << "here2" << endl;
     return;
   }
 }
-Node* getUncle(Node* header, Node* n, Node* Uncle){
-  return Uncle;
-}
+void getUncle(Node* GrandParent, Node* Parent, Node* ActualUncle){
+  //return Uncle;
+  if((*GrandParent).getRight() != NULL && (*GrandParent).getRight() == Parent){
+    (*ActualUncle) = (*(*GrandParent).getLeft());
+    }
+   if((*GrandParent).getLeft() != NULL && (*GrandParent).getLeft() == Parent){
+    (*ActualUncle) = (*(*GrandParent).getRight());
+  }
+  //cout << "here" << endl;
+  cout << (*(*ActualUncle).getData()) << endl;
+    }
+/*
 Node* getParent(Node* header, Node* n, Node* Parent){
   // if((*(*n).getData()) == )){ // THIS IS THE NODE
   if(header == n){
@@ -521,15 +577,38 @@ Node* getParent(Node* header, Node* n, Node* Parent){
   if((*(*header).getData()) == (*searchData)){
 	 (*exists) = true;
        }
-  */
-  if((*header).getLeft() != NULL && (*(*n).getData()) <= (*(*header).getData())){ // not the node so search left
-    cout << "here2" << endl;
-    getParent((*header).getLeft(), n, header);
-       }
+*/
+//if((*header).getLeft() != NULL && (*(*n).getData()) <= (*(*header).getData())){ // not the node so search left
+//  cout << "here2" << endl;
+//  getParent((*header).getLeft(), n, header);
+//     }
   //cout << "herez" << endl;
   //return NULL;
-}
-Node* getGrandParent(Node* header, Node* n, Node* GrandParent){
-  return GrandParent;
+//}
+//*/
+void getGrandParent(Node* header, Node* n, Node* GrandParent, Node* Parent, Node* ActualGrandParent){
+   if(header == n){
+  //	 (*exists) = true;
+    // cout << "here" << endl;
+      cout << (*(*GrandParent).getData()) << endl;
+    (*ActualGrandParent) = (*GrandParent);
+    //return Parent;
+    }
+
+  if((*header).getRight() != NULL && (*(*n).getData()) > (*(*header).getData())){ // not the node search rihgt
+    //cout << "here1" << endl;
+    getGrandParent((*header).getRight(), n, Parent, header, ActualGrandParent);
+       }
+  /*
+  if((*(*header).getData()) == (*searchData)){
+	 (*exists) = true;
+       }
+  */
+  if((*header).getLeft() != NULL && (*(*n).getData()) <= (*(*header).getData())){ // not the node so search left
+    //cout << "here2" << endl;
+    getGrandParent((*header).getLeft(), n, Parent, header, ActualGrandParent);
+       }
+
+  //return GrandParent;
 }
 
