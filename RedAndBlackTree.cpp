@@ -121,8 +121,12 @@ int main(){ // initialization of variables
     //  cout << (*(*getParent(header, two, Parent)).getData()) << endl;
     Add(header, two);
     getParent(header, two, Parent, ActualParent);
-    getGrandParent(header,  two,  GrandParent, ActualParent, ActualGrandParent);
-    getUncle(ActualGrandParent, ActualParent, ActualUncle);
+    getGrandParent(header,  two,  GrandParent, ActualParent, ActualGrandParent); // check NULL case
+    getUncle(ActualGrandParent, ActualParent, ActualUncle); // check NULL case
+    cout << "final DATA" << endl;
+    cout << "P" << (*(*ActualParent).getData()) << endl;
+    cout << "GP" <<(*(*ActualGrandParent).getData()) << endl;
+     cout << "U" << (*(*ActualUncle).getData()) << endl;
     // cout << (*(*ActualParent).getData()) << endl;
 	//cout << "why" << endl;
     // }
@@ -503,7 +507,7 @@ void getParent(Node* header, Node* n, Node* Parent, Node* ActualParent){
   if(header == n){
   //	 (*exists) = true;
     // cout << "here" << endl;
-    cout << (*(*Parent).getData()) << endl;
+    //cout << (*(*Parent).getData()) << endl;
     (*ActualParent) = (*Parent);
     //return Parent;
     }
@@ -542,23 +546,46 @@ void FixTree(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent
        (*n).setColor(BLACK);
     return;
   }
-  if(Parent != NULL && (*(*Parent).getColor()) == (*BLACK)){
+  else if((*(*Parent).getColor()) == (*BLACK)){
     //(*n).setColor(BLACK);
     //cout << "here2" << endl;
     return;
   }
+  else if(Uncle != NULL && (*(*Uncle).getColor()) == (*RED)){
+    (*Parent).setColor(BLACK);
+    (*Uncle).setColor(BLACK);
+    (*GrandParent).setColor(RED);
+    //  FixTree(header, n, Uncle,  GrandParent,  Parent);
+  }
+  
 }
 void getUncle(Node* GrandParent, Node* Parent, Node* ActualUncle){
   //return Uncle;
-  if((*GrandParent).getRight() != NULL && (*GrandParent).getRight() == Parent){
-    (*ActualUncle) = (*(*GrandParent).getLeft());
-    }
-   if((*GrandParent).getLeft() != NULL && (*GrandParent).getLeft() == Parent){
-    (*ActualUncle) = (*(*GrandParent).getRight());
-  }
+  // cout << "here" << endl;
+  //cout << "left" << (*(*(*GrandParent).getLeft()).getData()) << endl;
+  //cout << "right" << (*(*(*GrandParent).getRight()).getData()) << endl;
+   if((*(*Parent).getData()) > (*(*GrandParent).getData())){
+    //  cout << "here"
+     //    cout << "here1" << endl;
+     if((*GrandParent).getLeft() != NULL){
+     (*ActualUncle) = (*(*GrandParent).getLeft());
+     }
+     else{
+       //ActualUncle = NULL;
+     }
+     }
+   if((*(*Parent).getData()) <= (*(*GrandParent).getData())){
+     // cout << "here2" << endl;
+     if((*GrandParent).getRight() != NULL){
+     (*ActualUncle) = (*(*GrandParent).getRight());
+     }
+     else{
+       //  ((*ActualUncle).getData()) = NULL;
+     }
+     }
   //cout << "here" << endl;
-  cout << (*(*ActualUncle).getData()) << endl;
-    }
+   //cout << "UNCLE:" << (*(*ActualUncle).getData()) << endl;
+   }
 /*
 Node* getParent(Node* header, Node* n, Node* Parent){
   // if((*(*n).getData()) == )){ // THIS IS THE NODE
@@ -590,7 +617,7 @@ void getGrandParent(Node* header, Node* n, Node* GrandParent, Node* Parent, Node
    if(header == n){
   //	 (*exists) = true;
     // cout << "here" << endl;
-      cout << (*(*GrandParent).getData()) << endl;
+    //  cout << (*(*GrandParent).getData()) << endl;
     (*ActualGrandParent) = (*GrandParent);
     //return Parent;
     }
