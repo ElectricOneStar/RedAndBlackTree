@@ -76,7 +76,7 @@ int main(){ // initialization of variables
   */
 (*index) = 1;
   do{
-  cout << "Welcome to Binary Tree Please Select your Input: User or File" << endl;
+  cout << "Welcome to Red and Black Tree Please Select your Input: User or File" << endl;
   cin.get(inputType, 20); // will continue to ask for type of input
   cin.clear();
   cin.ignore();
@@ -103,7 +103,7 @@ int main(){ // initialization of variables
   //cout << "First Number: " << (*Parce(input, index, counterOne, wordCounter, parced)) << endl;
   BuildTree(input, index, counterOne, wordCounter, parced, size, header); // builds the tree
   do{
-  cout << "The Binary tree is now created. you can ADD, DELETE, SEARCH, or PRINT from the tree. You can also type QUIT if you want to quit the program" << endl; 
+  cout << "The Red and Black tree is now created. you can ADD, DELETE, SEARCH, or PRINT from the tree. You can also type QUIT if you want to quit the program(NOTE THAT ALL THE FUNCTIONS ARE COMPLETE FOR PART 1 EXCEPT for DELETE I WILL WORK ON THAT IN PART 2)" << endl; 
   cin.get(inputFunction, 20); // gets the function that the users want to do
   //cin.ignore();
   cin.clear();
@@ -638,4 +638,26 @@ void getGrandParent(Node* header, Node* n, Node* GrandParent, Node* Parent, Node
 
   //return GrandParent;
 }
-
+void InsertCaseFour(Node* n, Node* ActualParent, Node* ActualGrandParent){
+  Node* p = ActualParent;
+  Node* g = ActualGrandParent;
+  if(n == (*p).getRight() && p == (*g).getLeft()){
+    //RotateLeft(p);
+    n = (*n).getLeft();
+    
+  }
+  else if(n == (*p).getLeft() && p == (*g).getRight()){
+    //RotateRight(p);
+    n = (*n).getRight();
+  }
+  // n = (*n).getRight();
+  
+}
+void RotateLeft(Node* n, Node* ActualParent){
+  Node* nnew = (*n).getRight();
+  Node* p = ActualParent;
+  (*n).setRight((*nnew).getLeft());
+  (*nnew).setLeft(n);
+  ActualParent = 
+  //assert(nnew != NULL);
+    }
