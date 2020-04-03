@@ -14,8 +14,9 @@ Citation: https://en.wikipedia.org/wiki/Red%E2%80%93black_tree
 using namespace std;
 //void FixTree(Node* n);
 void getParent(Node* header, Node* n, Node* Parent, Node* ActualParent);
-void FixTree(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent);
+//void FixTree(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent);
 //Node* getParent(Node* header, Node* n, Node* Parent);
+void FixTree(Node* header, Node* n, Node* ActualUncle, Node* ActualGrandParent, Node* ActualParent, Node* Uncle, Node* GrandParent, Node* Parent);
 void getGrandParent(Node* header, Node* n, Node* GrandParent, Node* Parent, Node* ActualGrandParent);
 //void getUncle(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent);
 void getUncle(Node* GrandParent, Node* Parent, Node* ActualUncle);
@@ -23,7 +24,8 @@ void getUncle(Node* GrandParent, Node* Parent, Node* ActualUncle);
 //Node* getParent(Node* n);
 //Node* getGrandParent(Node* n);
 int* Parce(char* input, int* index, int* counterOne, int* wordCounter, int* parced); // functions
-void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header);
+//void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header);
+void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header, Node* ActualUncle, Node* ActualGrandParent, Node* ActualParent, Node* Uncle, Node* GrandParent, Node* Parent); // this builds the tre
 void Add(Node* header, Node* add);
 //void Subtract();
 void Subtract(Node* header, int* deleteThis, Node* previous, int* DCounter, int* skip, int* special);
@@ -101,7 +103,7 @@ int main(){ // initialization of variables
   }
   maxSize( input, size); // gets size of tree
   //cout << "First Number: " << (*Parce(input, index, counterOne, wordCounter, parced)) << endl;
-  BuildTree(input, index, counterOne, wordCounter, parced, size, header); // builds the tree
+  BuildTree(input, index, counterOne, wordCounter, parced, size, header, ActualUncle, ActualGrandParent, ActualParent, Uncle, GrandParent, Parent); // builds the tree
   do{
   cout << "The Red and Black tree is now created. you can ADD, DELETE, SEARCH, or PRINT from the tree. You can also type QUIT if you want to quit the program(NOTE THAT ALL THE FUNCTIONS ARE COMPLETE FOR PART 1 EXCEPT for DELETE I WILL WORK ON THAT IN PART 2)" << endl; 
   cin.get(inputFunction, 20); // gets the function that the users want to do
@@ -123,17 +125,17 @@ int main(){ // initialization of variables
     getParent(header, two, Parent, ActualParent);
     getGrandParent(header,  two,  GrandParent, ActualParent, ActualGrandParent); // check NULL case
     getUncle(ActualGrandParent, ActualParent, ActualUncle); // check NULL case
-    cout << "final DATA" << endl;
-    cout << "P" << (*(*ActualParent).getData()) << endl;
-    cout << "GP" <<(*(*ActualGrandParent).getData()) << endl;
-     cout << "U" << (*(*ActualUncle).getData()) << endl;
+    //  cout << "final DATA" << endl;
+    // cout << "P" << (*(*ActualParent).getData()) << endl;
+    //cout << "GP" <<(*(*ActualGrandParent).getData()) << endl;
+    //cout << "U" << (*(*ActualUncle).getData()) << endl;
     // cout << (*(*ActualParent).getData()) << endl;
 	//cout << "why" << endl;
     // }
       //cout << (*(*getParent(header, two, Parent)).getData()) << endl;
     //cout << (*getParent(header, two, Parent).getData()) << endl;
     //cout << "there" << endl;
-    FixTree(header, two, ActualUncle, ActualGrandParent, ActualParent);
+     FixTree(header, two, ActualUncle, ActualGrandParent, ActualParent, Uncle, GrandParent, Parent);
     //FixTree(header, two, getUncle(header, two, Uncle), getGrandParent(header, two, GrandParent), getParent(header, two, Parent));
     cout << "Added" << endl;
   }
@@ -229,7 +231,7 @@ int* Parce(char* input, int* index, int* counterOne, int* wordCounter, int* parc
   }
   //return index;
 }
-void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header){ // this builds the tree
+void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header, Node* ActualUncle, Node* ActualGrandParent, Node* ActualParent, Node* Uncle, Node* GrandParent, Node* Parent){ // this builds the tree
   //Node* one = new Node;
       // (*one).setData(Parce(input, index, counterOne, wordCounter, parced));
 
@@ -252,6 +254,22 @@ void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* 
     //cout << "data" << (*(*one).getData()) << endl;
     Add(header, one); // adds the new node
     (*index)++;
+    // Add(header, two);
+    getParent(header, one, Parent, ActualParent);
+    getGrandParent(header,  one,  GrandParent, ActualParent, ActualGrandParent); // check NULL case
+    getUncle(ActualGrandParent, ActualParent, ActualUncle); // check NULL case
+    //cout << "final DATA" << endl;
+     //     cout << "P" << (*(*ActualParent).getData()) << endl;
+    //cout << "GP" <<(*(*ActualGrandParent).getData()) << endl;
+    //cout << "U" << (*(*ActualUncle).getData()) << endl;
+    //     cout << (*(*ActualParent).getData()) << endl;
+	//cout << "why" << endl;
+    // }
+      //cout << (*(*getParent(header, two, Parent)).getData()) << endl;
+    //cout << (*getParent(header, two, Parent).getData()) << endl;
+    //cout << "there" << endl;
+     FixTree(header, one, ActualUncle, ActualGrandParent, ActualParent, Uncle, GrandParent, Parent);
+
   }
   while((*index) != (*size)+1); // continues to do this until all the numbers from input are put into the tree
   //cout << "double jump value: " <<  (*(*(*(*header).getRight()).getRight()).getData())<< endl;
@@ -508,9 +526,27 @@ void getParent(Node* header, Node* n, Node* Parent, Node* ActualParent){
   //	 (*exists) = true;
     // cout << "here" << endl;
     //cout << (*(*Parent).getData()) << endl;
-    (*ActualParent) = (*Parent);
+    // cout << "gotone" << endl;
+    if(Parent != NULL){
+      // cout << "here" << endl;
+      (*ActualParent) = (*Parent);
     //return Parent;
     }
+  else{
+    //cout << "hereyes" << endl;
+    ActualParent = NULL;
+  }
+    return;
+  }
+  else{
+    // cout << "herex" << endl;
+    // ActualParent = NULL;
+    //cout << "herenot" << endl;
+    // return;
+  }
+
+  
+  
 
   if((*header).getRight() != NULL && (*(*n).getData()) > (*(*header).getData())){ // not the node search rihgt
     //cout << "here1" << endl;
@@ -528,34 +564,61 @@ void getParent(Node* header, Node* n, Node* Parent, Node* ActualParent){
   //cout << "herez" << endl;
   //return NULL;
 }
-void FixTree(Node* header, Node* n, Node* Uncle, Node* GrandParent, Node* Parent){
+void FixTree(Node* header, Node* n, Node* ActualUncle, Node* ActualGrandParent, Node* ActualParent, Node* Uncle, Node* GrandParent, Node* Parent){
   // cout << "here" << endl;
   //cout << (*(*n).getData()) << endl;
   //cout << (*(*Parent).getData()) << endl;
   //cout << (*(*Parent).getColor()) << endl;
   // cout << (*(*Parent).getData()) << endl;
-  if(Parent == NULL){
+  if(ActualParent == NULL){
     // cout << "why" << endl;
   }
   int* RED = new int;
   (*RED) = 0;
   int* BLACK = new int;
   (*BLACK) = 1;
-  if(Parent == NULL){
+  if(ActualParent == NULL){
     //  cout << "here1" << endl;
        (*n).setColor(BLACK);
     return;
   }
-  else if((*(*Parent).getColor()) == (*BLACK)){
+  else if((*(*ActualParent).getColor()) == (*BLACK)){
     //(*n).setColor(BLACK);
     //cout << "here2" << endl;
     return;
   }
-  else if(Uncle != NULL && (*(*Uncle).getColor()) == (*RED)){
-    (*Parent).setColor(BLACK);
-    (*Uncle).setColor(BLACK);
-    (*GrandParent).setColor(RED);
-    //  FixTree(header, n, Uncle,  GrandParent,  Parent);
+  else if(ActualUncle != NULL && (*(*ActualUncle).getColor()) == (*RED)){
+    (*ActualParent).setColor(BLACK);
+    (*ActualUncle).setColor(BLACK);
+    (*ActualGrandParent).setColor(RED);
+    //(*n) = (*ActualGrandParent);
+      Node* save = new Node;
+    (*save) = (*ActualGrandParent);
+          Node* save2 = new Node;
+    (*save2) = (*ActualGrandParent);
+
+    Parent = NULL;
+    GrandParent = NULL;
+      Uncle = NULL;
+      ActualParent = NULL;
+      ActualGrandParent = NULL;
+	ActualUncle = NULL;
+      // cout << "P" << (*(*Parent).getData()) << endl;
+	//	cout << "a1" << endl;
+	  getParent(header, save, Parent, ActualParent);
+	  //cout << "a2" << endl;
+	  getGrandParent(header,  save,  GrandParent, ActualParent, ActualGrandParent); // check NULL case
+	  //cout << "a3" << endl;
+    getUncle(ActualGrandParent, ActualParent, ActualUncle); // check NULL case
+    //  cout << "a4" << endl;
+    //cout << "Mod Data" << endl;
+    // cout << "P" << (*(*ActualParent).getData()) << endl;
+    //cout << "GP" <<(*(*ActualGrandParent).getData()) << endl;
+    //cout << "U" << (*(*ActualUncle).getData()) << endl;
+    //    cout << (*(*save).getData()) << endl;
+    //cout << "here" << endl;
+    FixTree(header, save2, ActualUncle, ActualGrandParent, ActualParent, Uncle, GrandParent, Parent);
+    // FixTree(header, n, Uncle,  GrandParent,  Parent);
   }
   
 }
@@ -564,25 +627,42 @@ void getUncle(Node* GrandParent, Node* Parent, Node* ActualUncle){
   // cout << "here" << endl;
   //cout << "left" << (*(*(*GrandParent).getLeft()).getData()) << endl;
   //cout << "right" << (*(*(*GrandParent).getRight()).getData()) << endl;
-   if((*(*Parent).getData()) > (*(*GrandParent).getData())){
-    //  cout << "here"
+  //cout << "infunct" << endl;
+  if(Parent != NULL && (*(*Parent).getData()) > (*(*GrandParent).getData())){
+    //cout << "t1" << endl;
      //    cout << "here1" << endl;
      if((*GrandParent).getLeft() != NULL){
-     (*ActualUncle) = (*(*GrandParent).getLeft());
+       // cout << "t2" << endl;
+       (*ActualUncle) = (*(*GrandParent).getLeft());
+       // return;
      }
      else{
-       //ActualUncle = NULL;
+       //cout << "t3" << endl;
+       ActualUncle = NULL;
      }
-     }
-   if((*(*Parent).getData()) <= (*(*GrandParent).getData())){
+     //cout << "exit" << endl;
+     return;
+   }
+   else if(Parent != NULL && (*(*Parent).getData()) <= (*(*GrandParent).getData())){
      // cout << "here2" << endl;
+     //cout << "t4" << endl;
      if((*GrandParent).getRight() != NULL){
      (*ActualUncle) = (*(*GrandParent).getRight());
+     //return;
+     //cout << "t5" << endl;
      }
      else{
        //  ((*ActualUncle).getData()) = NULL;
+          ActualUncle = NULL;
+	  //	  cout << "t6" << endl; 
      }
-     }
+     return; 
+   }
+   else{
+     //cout << "t7" << endl;
+     // ActualUncle = NULL;
+     //return;
+   }
   //cout << "here" << endl;
    //cout << "UNCLE:" << (*(*ActualUncle).getData()) << endl;
    }
@@ -618,10 +698,20 @@ void getGrandParent(Node* header, Node* n, Node* GrandParent, Node* Parent, Node
   //	 (*exists) = true;
     // cout << "here" << endl;
     //  cout << (*(*GrandParent).getData()) << endl;
-    (*ActualGrandParent) = (*GrandParent);
+     if(GrandParent != NULL){
+     (*ActualGrandParent) = (*GrandParent);
+     
+     }
+     else{
+       ActualGrandParent = NULL;
+     }
     //return Parent;
-    }
-
+     return;
+   }
+ else{
+   //ActualGrandParent = NULL;
+	//return;
+   }
   if((*header).getRight() != NULL && (*(*n).getData()) > (*(*header).getData())){ // not the node search rihgt
     //cout << "here1" << endl;
     getGrandParent((*header).getRight(), n, Parent, header, ActualGrandParent);
@@ -658,6 +748,6 @@ void RotateLeft(Node* n, Node* ActualParent){
   Node* p = ActualParent;
   (*n).setRight((*nnew).getLeft());
   (*nnew).setLeft(n);
-  ActualParent = 
+  //ActualParent = 
   //assert(nnew != NULL);
     }
