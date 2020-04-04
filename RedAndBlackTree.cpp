@@ -27,6 +27,7 @@ int* Parce(char* input, int* index, int* counterOne, int* wordCounter, int* parc
 //void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header);
 void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header, Node* ActualUncle, Node* ActualGrandParent, Node* ActualParent, Node* Uncle, Node* GrandParent, Node* Parent); // this builds the tre
 void Add(Node* header, Node* add);
+void RotateLeft(Node* n, Node* ActualParent);
 //void Subtract();
 void Subtract(Node* header, int* deleteThis, Node* previous, int* DCounter, int* skip, int* special);
 void Print(Node* header, int length, int count, int i);
@@ -34,7 +35,8 @@ void Print(Node* header, int length, int count, int i);
 void Search(Node* header, int* searchData, bool* exists);
 void maxSize(char* input, int* size);
 Node* getRightMost(Node* header);
-
+void RotateRight(Node* n, Node* ActualParent);
+void InsertCaseFour(Node* n, Node* ActualParent, Node* ActualGrandParent);
 int main(){ // initialization of variables
   //HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   //SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
@@ -620,6 +622,15 @@ void FixTree(Node* header, Node* n, Node* ActualUncle, Node* ActualGrandParent, 
     FixTree(header, save2, ActualUncle, ActualGrandParent, ActualParent, Uncle, GrandParent, Parent);
     // FixTree(header, n, Uncle,  GrandParent,  Parent);
   }
+  else{
+    InsertCaseFour(n, ActualParent, ActualGrandParent);
+    //cout << "rotateRight" << endl;
+    // RotateRight( n,  ActualParent);
+    //  cout << "rotate left" << endl;
+     //RotateLeft( n, ActualParent);
+    // RotateLeft( ActualParent, ActualGrandParent);
+    //cout << "finish" << endl;
+  }
   
 }
 void getUncle(Node* GrandParent, Node* Parent, Node* ActualUncle){
@@ -659,6 +670,10 @@ void getUncle(Node* GrandParent, Node* Parent, Node* ActualUncle){
      return; 
    }
    else{
+     
+     // cout << "rotate left" << endl;
+     //RotateLeft( n, ActualParent);
+     //cout << "finish" << endl;
      //cout << "t7" << endl;
      // ActualUncle = NULL;
      //return;
@@ -729,25 +744,98 @@ void getGrandParent(Node* header, Node* n, Node* GrandParent, Node* Parent, Node
   //return GrandParent;
 }
 void InsertCaseFour(Node* n, Node* ActualParent, Node* ActualGrandParent){
+  cout << "inside" << endl;
   Node* p = ActualParent;
   Node* g = ActualGrandParent;
+  //ut << "match" << endl;
+  if(n == (*p).getRight()){
+    cout << "yes" << endl;
+  }
+  cout <<  (*(*p).getData()) << endl;
+  cout <<  (*(*g).getData()) << endl;
+  cout << (*(*(*g).getLeft()).getData()) << endl;
+  // cout <<  (*(*p).getData()) << endl;
+  if(p == (*g).getLeft()){
+    cout << "yes2" << endl;
+  }
+  if(ActualParent == (*ActualGrandParent).getLeft()){
+    cout << "yes3" << endl;
+  }
   if(n == (*p).getRight() && p == (*g).getLeft()){
-    //RotateLeft(p);
+    cout << "here" << endl;
+      RotateLeft(p, ActualGrandParent);
     n = (*n).getLeft();
     
   }
   else if(n == (*p).getLeft() && p == (*g).getRight()){
-    //RotateRight(p);
-    n = (*n).getRight();
-  }
-  // n = (*n).getRight();
+    cout << "here" << endl;
+    RotateRight(p, ActualGrandParent);
+    //(*n).getRight();
   
+   n = (*n).getRight();
+  }
 }
 void RotateLeft(Node* n, Node* ActualParent){
+  cout << "t1" << endl;
+  cout << (*(*n).getData()) << endl;
   Node* nnew = (*n).getRight();
   Node* p = ActualParent;
-  (*n).setRight((*nnew).getLeft());
+  cout << (*(*p).getData()) << endl;
+  cout << (*(*nnew).getData()) << endl;
+  //cout << (*(*p).getData()) << endl;
+  cout << "t2" << endl;
+  //if((*nnew).getLeft() != NULL){ // safegaurd
+  (*n).setRight((*nnew).getLeft()); 
+  //}
+  cout << "here" << endl;
   (*nnew).setLeft(n);
+  cout << "t3" << endl;
+  if((*n).getRight() != NULL){
+    cout << "t5" << endl;
+  }
+  cout << "t6" << endl;
+  if(p != NULL){
+    cout << "t7" << endl;
+    if(n == (*p).getLeft()){
+      cout << "t8" << endl;
+      (*p).setLeft(nnew);
+    }
+    else if(n == (*p).getRight()){
+      (*p).setRight(nnew);
+      cout << "t9" << endl;
+    }
+  }
+  cout << "done" << endl;
   //ActualParent = 
   //assert(nnew != NULL);
+}
+void RotateRight(Node* n, Node* ActualParent){
+  cout << "t1" << endl;
+  Node* nnew = (*n).getLeft();
+  Node* p = ActualParent;
+  cout << "t2" << endl;
+  //if((*nnew).getRight() != NULL){ // safegaurd
+  (*n).setLeft((*nnew).getRight());
+  //}
+  cout << "here" << endl;
+  (*nnew).setRight(n);
+  cout << "t3" << endl;
+  if((*n).getLeft() != NULL){
+    cout << "t5" << endl;
+  }
+  cout << "t6" << endl;
+      if(p != NULL){
+    cout << "t7" << endl;
+    if(n == (*p).getLeft()){
+      cout << "t8" << endl;
+      (*p).setLeft(nnew);
     }
+    else if(n == (*p).getRight()){
+      (*p).setRight(nnew);
+      cout << "t9" << endl;
+    }
+  }
+  cout << "done" << endl;
+  //ActualParent = 
+  //assert(nnew != NULL);
+}
