@@ -529,16 +529,21 @@ Node* getRightMost(Node* header){
 void getParent(Node* header, Node* n, Node* Parent, Node* ActualParent){
   // if((*(*n).getData()) == )){ // THIS IS THE NODE
   if(header == n){
+    cout << "here" << endl;
   //	 (*exists) = true;
     // cout << "here" << endl;
     //cout << (*(*Parent).getData()) << endl;
     // cout << "gotone" << endl;
     if(Parent != NULL){
       // cout << "here" << endl;
+      cout << "here1" << endl;
+      cout << (*(*Parent).getData()) << endl;
       (*ActualParent) = (*Parent);
-    //return Parent;
+      cout << "finish" << endl;
+      //return Parent;
     }
   else{
+    cout << "here2" << endl;
     //cout << "hereyes" << endl;
     ActualParent = NULL;
   }
@@ -632,8 +637,8 @@ void FixTree(Node* header, Node* n, Node* ActualUncle, Node* ActualGrandParent, 
     GrandParent = NULL;
     //(*ogg) = (*ActualGrandParent);
     InsertCaseFour(n, ActualParent, ActualGrandParent, Parent, GrandParent, header, ActualGrandParent);
-    (*header).setLeft((*ActualGrandParent).getLeft());
-    //  InsertCaseFour2( n,  ActualParent,  ActualGrandParent, ActualGrandParent); // watch ogg
+    // (*header).setLeft((*ActualGrandParent).getLeft());
+    //InsertCaseFour2( n,  ActualParent,  ActualGrandParent, ActualGrandParent); // watch ogg
     //  (*header) = (*ActualParent);
     //(*header).setLeft((*ActualGrandParent).getLeft());
     int* red = new int;
@@ -808,10 +813,34 @@ void InsertCaseFour(Node* n, Node* ActualParent, Node* ActualGrandParent, Node* 
   
    n = (*n).getRight();
   }
+  
   //(*header).setLeft((*ActualGrandParent).getLeft());
-  getParent(header, n, Parent, ActualParent);
-	  //cout << "a2" << endl;
-  	  getGrandParent(header,  n,  GrandParent, ActualParent, ActualGrandParent); // check NULL 
+  cout << "here" << endl;
+  Parent = NULL;
+  //ActualParent = NULL;
+   (*header) = (*ActualGrandParent);
+  //(*header).setLeft((*ActualGrandParent).getLeft());
+  //cout << (*(*header).getData()) << endl;
+  //cout << (*(*(*header).getLeft()).getData()) << endl;
+  //cout << (*(*(*(*header).getLeft()).getLeft()).getData()) << endl;
+ cout << (*(*n).getData()) << endl;
+  cout << (*(*ActualGrandParent).getData()) << endl;
+  cout << (*(*ActualParent).getData()) << endl;
+  cout << (*(*(*ActualGrandParent).getLeft()).getData()) << endl;
+  cout << (*(*(*(*ActualGrandParent).getLeft()).getLeft()).getData()) << endl;
+  /*
+  getParent(ActualGrandParent, n, Parent, ActualParent);
+  cout << "here" << endl;
+  //cout << "a2" << endl;
+  getGrandParent(header,  n,  GrandParent, ActualParent, ActualGrandParent);
+*/ 
+// check NULL 
+	  cout << "second Phase Data" << endl;
+	  cout << (*(*n).getData()) << endl;
+	  cout << (*(*ActualParent).getData()) << endl;
+	  cout << (*(*ActualGrandParent).getData()) << endl;
+	  cout << (*(*ogg).getData()) << endl;
+	  cout << "end daata" << endl;
 	  //	  InsertCaseFour2( n,  ActualParent,  ActualGrandParent, ogg);
 	  //ActualParent = 
   //assert(nnew != NULL);
