@@ -594,25 +594,6 @@ void adjust(Node** root, Node* newNode)
 
 
 
-//pseudocode for left rotations
-//pre: right[x] != nil[T]
-//pre: root's parent is nill[T]
-//
-//Left-Rotate(T,x)
-//   y = right[x]
-//   right[x] = left[y]
-//   p[left[y]] = x
-//   p[y] = p[x]
-//
-//
-//   if p[x] == nil[T] then root[T] = y
-//   else
-//      if x == left[p[x]] then left[p[x]] = y
-//      else
-//         right[p[x]] = y
-//   left[y] = x
-//   p[x] = y
-
 
 
 void leftRotate(Node** root, Node* nextNode)
@@ -642,32 +623,6 @@ void leftRotate(Node** root, Node* nextNode)
    current -> setLeft(nextNode);
    nextNode -> setParent(current);
 }
-
-
-
-//
-//pseudocode for right rotation
-//pre: left[x] != nil[T]
-//pre: root's parent is nill[T]
-//Right-Rotate(T,x)
-//   y = left[x]           // y now points to Node to left of x
-//   left[x] = right[y]    // y's right subtree becomes x's left subtree
-//   p[right[y]] = x       // right subtree of y gets a new parent
-//   p[y] = p[x]           // y's parent is now x's parent
-//
-//   // if x is at root then y becomes new root
-//   if p[x] == nil[T] then root[T] = y
-//   else
-//       // if x is a left child then adjust x's parent's left child or...
-//
-//        if x == left[p[x]] then left[p[x]] = y
-//        else
-//        // adjust x's parent's right child
-//           right[p[x]] = y
-//   // the right child of y is now x
-//   right[y] = x
-//   // the parent of x is now y
-//   p[x] = y
 
 
 
