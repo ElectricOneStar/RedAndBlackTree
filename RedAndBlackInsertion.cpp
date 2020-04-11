@@ -6,7 +6,7 @@
 using namespace std;
 int* Parce(char* input, int* index, int* counterOne, int* wordCounter, int* parced); // functions
 void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header);
-void Add(Node* header, Node* add);
+//void Add(Node* header, Node* add);
 //void Subtract();
 //void Subtract(Node* header, int* deleteThis, Node* previous, int* DCounter, int* skip, int* special);
 void Print(Node* header, int length, int count, int i);
@@ -19,30 +19,12 @@ void rotateRight(Node *&header, Node *&pointer);
 void fixViolation(Node* &header, Node* &pointer);
 void balance(Node* &head, Node* &curr);
 void balance2(Node* &head, Node* &curr);
-void adjust(Node** root, Node* newNode);
-void rightRotate(Node** root, Node* temp);
-void leftRotate(Node** root, Node* nextNode);
 void add (Node** root, Node* parentNode, int* NUMBER);
-void setGrandparent(Node* input);
-//{
-  //input -> getParent() -> setParent(input);
-   //}
-
-
-
-//getting the grandparent
-Node* getGrandparent(Node* input);
-//{
-  //return input -> getParent() -> getParent();
-   //}
-
-/*
-void setGrandparent(Node* n);
-Node* getGrandparent(Node* n);
+void adjust(Node** header, Node* nnew);
 void leftRotate(Node** header, Node* next);
 void rightRotate(Node** header, Node* temporary);
-void adjust(Node** header, Node* nnew);
-*/
+void setGrandparent(Node* n);
+Node* getGrandparent(Node* n);
 int main(){ // initialization of variables
   //HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   //SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
@@ -238,6 +220,7 @@ void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* 
   }
   while((*index) != (*size)+1); // continues to do this until all the numbers from input are put into the tree
 }
+/*
 void Add(Node* header, Node* add){ // this funcitons adds a node to the list
   // cout << "add" << endl;
   if((*(*add).getData()) <= (*(*header).getData()) && (*header).getLeft() != NULL){ // this node should go to the left because it is <= current node
@@ -260,7 +243,7 @@ void Add(Node* header, Node* add){ // this funcitons adds a node to the list
   /// adjust(&header, add);
 
 }
-
+*/
 void Print(Node* header, int length, int count, int i){ // this funciton prints the tree where the parent and child relationship is clear
   //cout << "print" << endl;
    int left = 2*i;
@@ -315,7 +298,7 @@ void maxSize(char* input, int* size){ // this function gets the size of the tree
     }
   }
 }
-/*
+
 void setGrandparent(Node* n)
 {
    n-> getParent() -> setParent(n);
@@ -415,256 +398,41 @@ void adjust(Node** header, Node* nnew)
 
 
             {
-
-
                 nnew -> getParent() -> setColor(1); next -> setColor(1); getGrandparent(nnew) -> setColor(0);
-
-
                 nnew = getGrandparent(nnew);
-
-
            }
-
-
            else
-
-
                {
-
-
                     if(nnew == nnew -> getParent() -> getRight())
-
-
                     {
-
-
                            nnew = nnew -> getParent();
-
-
                            leftRotate(header, nnew);
-
-
                     }
-
-
                    nnew -> getParent() -> setColor(1); getGrandparent(nnew) -> setColor(0);
-
-
                    rightRotate(header, getGrandparent(nnew));
-
-
                    }
-
-
            }
-
-
    else
-
-
         {
-
-
            if (getGrandparent(nnew) -> getLeft() != NULL && getGrandparent(nnew) -> getLeft() -> getColor() ==0)
-
-
            {
-
-
                Node* inputting = new Node();
 	       inputting = getGrandparent(nnew) -> getLeft();
-
-
                nnew -> getParent() -> setColor(1); inputting -> setColor(1); getGrandparent(nnew) -> setColor(0); //setting colors
-
-
                nnew = getGrandparent(nnew);
-
-
-
-
-
-
-
            }
-
-
            else
-
-
            {
-
-
                if (nnew == nnew -> getParent() -> getLeft())
-
-
                {
-
-
                    nnew = nnew -> getParent();
-
-
                    rightRotate(header, nnew);
-
-
                }
-
-
                nnew -> getParent() -> setColor(1); getGrandparent(nnew) -> setColor(0); leftRotate(header, getGrandparent(nnew));
-
-
-
-
-
-
-
            }
-
-
         }
-
-
     }
-
-
    (*header) -> setColor(2);
-
-
-}
-*/
-
-
-//
-
-
-
-
-void adjust(Node** root, Node* newNode)
-{
-  // cout << "here" << endl;
-    while(newNode -> getParent() != NULL && newNode -> getParent() -> getColor() == 0 && newNode != (*root))
-    {
-       
-    if(newNode -> getParent() == getGrandparent(newNode) -> getLeft())
-        {
-           Node* nextNode = getGrandparent(newNode) -> getRight();
-            if(nextNode != NULL && nextNode -> getColor() == 0)
-            {
-                newNode -> getParent() -> setColor(1); nextNode -> setColor(1); getGrandparent(newNode) -> setColor(0);
-                newNode = getGrandparent(newNode);
-           }
-           else
-               {
-                    if(newNode == newNode -> getParent() -> getRight())
-                    {
-                           newNode = newNode -> getParent();
-                           leftRotate(root, newNode);
-                    }
-                   newNode -> getParent() -> setColor(1); getGrandparent(newNode) -> setColor(0);
-                   rightRotate(root, getGrandparent(newNode));
-                   }
-           }
-   else
-        {
-           if (getGrandparent(newNode) -> getLeft() != NULL && getGrandparent(newNode) -> getLeft() -> getColor() ==0)
-           {
-               Node* inputting = new Node(); inputting = getGrandparent(newNode) -> getLeft();
-               newNode -> getParent() -> setColor(1); inputting -> setColor(1); getGrandparent(newNode) -> setColor(0); //setting colors
-               newNode = getGrandparent(newNode);
-
-
-
-           }
-           else
-           {
-               if (newNode == newNode -> getParent() -> getLeft())
-               {
-                   newNode = newNode -> getParent();
-                   rightRotate(root, newNode);
-               }
-               newNode -> getParent() -> setColor(1); getGrandparent(newNode) -> setColor(0); leftRotate(root, getGrandparent(newNode));
-
-
-
-           }
-        }
-    }
-   (*root) -> setColor(2);
-}
-
-
-
-
-
-void leftRotate(Node** root, Node* nextNode)
-{
-   Node* current = nextNode -> getRight();
-   nextNode -> setRight(current -> getLeft());
-   if(current -> getLeft() != NULL)
-   {
-     current -> getLeft() -> setParent(nextNode); //set current's left to the parent of the nextNode (the inputted Node)
-   }
-   current -> setParent(nextNode -> getParent());
-   if(nextNode == *root)
-       {
-         *root = current; //The new root is now the current
-       }
-   else
-   {
-         if(nextNode == nextNode -> getParent() -> getLeft())
-         {
-           nextNode -> getParent() -> setLeft(current);
-         }
-         else
-         {
-           nextNode -> getParent() -> setRight(current);
-         }
-   }
-   current -> setLeft(nextNode);
-   nextNode -> setParent(current);
-}
-
-
-
-void rightRotate(Node** root, Node* temp)
-{
-   Node* nextNode = temp -> getLeft();
-   temp -> setLeft(nextNode -> getRight());
-   if(nextNode -> getRight() != NULL)
-       {
-         nextNode -> getRight() -> setParent(temp);
-       }
-   nextNode -> setParent(temp -> getParent());
-   if(temp == (*root))
-       {
-         (*root) = nextNode;
-       }
-   else
-       {
-         if(temp == temp -> getParent() -> getLeft())
-                 {
-                   temp -> getParent() -> setLeft(nextNode);
-                 }
-         else if (temp != temp -> getParent() -> getLeft())
-                 {
-                   temp -> getParent() -> setRight(nextNode);
-		  }
-       }
-   nextNode -> setRight(temp);
-   temp -> setParent(nextNode);
-}
-
-void setGrandparent(Node* input)
-{
-   input -> getParent() -> setParent(input);
-}
-
-
-
-//getting the grandparent
-Node* getGrandparent(Node* input)
-{
-   return input -> getParent() -> getParent();
 }
   void add (Node** root, Node* parentNode, int* NUMBER){
       if (parentNode -> getData() == 0)
