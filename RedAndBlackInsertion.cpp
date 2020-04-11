@@ -367,36 +367,14 @@ void leftRotate(Node** header, Node* next)
    current -> setLeft(next);
    next -> setParent(current);
 }
- 
-
-
 void adjust(Node** header, Node* nnew)
-
-
 {
-
-
     while(nnew -> getParent() != NULL && nnew -> getParent() -> getColor() == 0 && nnew != (*header))
-
-
     {
-
-
-       
-
-
     if(nnew -> getParent() == getGrandparent(nnew) -> getLeft())
-
-
         {
-
-
            Node* next = getGrandparent(nnew) -> getRight();
-
-
             if(next != NULL && next -> getColor() == 0)
-
-
             {
                 nnew -> getParent() -> setColor(1); next -> setColor(1); getGrandparent(nnew) -> setColor(0);
                 nnew = getGrandparent(nnew);
@@ -451,8 +429,7 @@ void adjust(Node** header, Node* nnew)
                 newNode -> setParent(parentNode);
                 parentNode -> setLeft(newNode);
                 adjust(root, newNode);
-            }
-            
+            }            
             else
             {
                 add(root, parentNode -> getLeft(), NUMBER);
