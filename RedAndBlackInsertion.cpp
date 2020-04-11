@@ -299,154 +299,130 @@ void maxSize(char* input, int* size){ // this function gets the size of the tree
   }
 }
 
-void setGrandparent(Node* n)
-{
+void setGrandparent(Node* n){
    n-> getParent() -> setParent(n);
 }
 
 
 
 //getting the grandparent
-Node* getGrandparent(Node* n)
-{
+Node* getGrandparent(Node* n){
    return n -> getParent() -> getParent();
 }
  
-void rightRotate(Node** header, Node* temporary)
-{
+void rightRotate(Node** header, Node* temporary){
    Node* nextNode = temporary -> getLeft();
-   temporary -> setLeft(nextNode -> getRight());
-   if(nextNode -> getRight() != NULL)
-       {
-         nextNode -> getRight() -> setParent(temporary);
+   (*temporary).setLeft((*nextNode).getRight());
+   if((*nextNode).getRight() != NULL){
+     (*(*nextNode).getRight()).setParent(temporary);
        }
-   nextNode -> setParent(temporary -> getParent());
-   if(temporary == (*header))
-       {
+   (*nextNode).setParent((*temporary).getParent());
+   if(temporary == (*header)){
          (*header) = nextNode;
-       }
-   else
-       {
-         if(temporary == temporary -> getParent() -> getLeft())
-                 {
-                   temporary -> getParent() -> setLeft(nextNode);
+  }
+   else{
+     if(temporary == (*(*temporary).getParent()).getLeft()){
+       (*(*temporary).getParent()).setLeft(nextNode);
                  }
-         else if (temporary != temporary -> getParent() -> getLeft())
-                 {
-                   temporary -> getParent() -> setRight(nextNode);
+     else if (temporary != (*(*temporary).getParent()).getLeft()){
+       (*(*temporary).getParent()).setRight(nextNode);
 		  }
        }
    nextNode -> setRight(temporary);
    temporary -> setParent(nextNode);
 }
  
-void leftRotate(Node** header, Node* next)
-{
-   Node* current = next -> getRight();
-   next -> setRight(current -> getLeft());
-   if(current -> getLeft() != NULL)
-   {
-     current -> getLeft() -> setParent(next); //set current's left to the parent of the next (the inputted node)
+void leftRotate(Node** header, Node* next){
+  Node* current = (*next).getRight();
+  (*next).setRight((*current).getLeft());
+  if((*current).getLeft() != NULL){
+    (*(*current).getLeft()).setParent(next); //set current's left to the parent of the next (the inputted node)
    }
-   current -> setParent(next -> getParent());
-   if(next == *header)
-       {
+  (*current).setParent((*next).getParent());
+   if(next == *header){
          *header = current; //The new header is now the current
        }
-   else
-   {
-         if(next == next -> getParent() -> getLeft())
-         {
-           next -> getParent() -> setLeft(current);
+   else{
+         if(next == next -> getParent() -> getLeft()){
+           (*(*next).getParent()).setLeft(current);
          }
-         else
-         {
-           next -> getParent() -> setRight(current);
+         else{
+           (*(*next).getParent()).setRight(current);
          }
    }
-   current -> setLeft(next);
-   next -> setParent(current);
+   (*current).setLeft(next);
+   (*next).setParent(current);
 }
-void adjust(Node** header, Node* nnew)
-{
-    while(nnew -> getParent() != NULL && nnew -> getParent() -> getColor() == 0 && nnew != (*header))
-    {
-    if(nnew -> getParent() == getGrandparent(nnew) -> getLeft())
-        {
-           Node* next = getGrandparent(nnew) -> getRight();
-            if(next != NULL && next -> getColor() == 0)
-            {
-                nnew -> getParent() -> setColor(1); next -> setColor(1); getGrandparent(nnew) -> setColor(0);
+void adjust(Node** header, Node* nnew){
+  while((*nnew).getParent() != NULL && (*(*nnew).getParent()).getColor() == 0 && nnew != (*header)){
+      if((*nnew).getParent() == (*getGrandparent(nnew)).getLeft()){
+      Node* next = (*getGrandparent(nnew)).getRight();
+	   if(next != NULL && (*next).getColor() == 0){
+	      (*(*nnew).getParent()).setColor(1);
+	      (*next).setColor(1);
+	      (*getGrandparent(nnew)).setColor(0);
                 nnew = getGrandparent(nnew);
            }
-           else
-               {
-                    if(nnew == nnew -> getParent() -> getRight())
-                    {
-                           nnew = nnew -> getParent();
+           else{
+	     if(nnew == (*(*nnew).getParent()).getRight()){
+		      nnew = (*nnew).getParent();
                            leftRotate(header, nnew);
                     }
-                   nnew -> getParent() -> setColor(1); getGrandparent(nnew) -> setColor(0);
+		    (*(*nnew).getParent()).setColor(1);
+		    (*getGrandparent(nnew)).setColor(0);
                    rightRotate(header, getGrandparent(nnew));
                    }
            }
-   else
-        {
-           if (getGrandparent(nnew) -> getLeft() != NULL && getGrandparent(nnew) -> getLeft() -> getColor() ==0)
-           {
+   else{
+     if ((*getGrandparent(nnew)).getLeft() != NULL && (*(*getGrandparent(nnew)).getLeft()).getColor() == 0){
                Node* inputting = new Node();
-	       inputting = getGrandparent(nnew) -> getLeft();
-               nnew -> getParent() -> setColor(1); inputting -> setColor(1); getGrandparent(nnew) -> setColor(0); //setting colors
+	       inputting = (*getGrandparent(nnew)).getLeft();
+               (*(*nnew).getParent()).setColor(1);
+	       (*inputting).setColor(1);
+	       (*getGrandparent(nnew)).setColor(0); //setting colors
                nnew = getGrandparent(nnew);
            }
-           else
-           {
-               if (nnew == nnew -> getParent() -> getLeft())
-               {
-                   nnew = nnew -> getParent();
+           else{
+	     if (nnew == (*(*nnew).getParent()).getLeft()){
+		 nnew = (*nnew).getParent();
                    rightRotate(header, nnew);
                }
-               nnew -> getParent() -> setColor(1); getGrandparent(nnew) -> setColor(0); leftRotate(header, getGrandparent(nnew));
+               (*(*nnew).getParent()).setColor(1);
+	       (*getGrandparent(nnew)).setColor(0);
+	       leftRotate(header, getGrandparent(nnew));
            }
         }
     }
-   (*header) -> setColor(2);
+    (*(*header)).setColor(2);
 }
   void add (Node** root, Node* parentNode, int* NUMBER){
-      if (parentNode -> getData() == 0)
-      {
-        parentNode -> setColor(1);
-	parentNode -> setData(NUMBER);
+    if ((*(*parentNode).getData()) == 0){
+        (*parentNode).setColor(1);
+	(*parentNode).setData(NUMBER);
       }
-      else
-      {
-        if((*NUMBER) < (*parentNode -> getData()))
-        {
-            if (parentNode -> getLeft() == NULL)
-            {
+      else{
+        if((*NUMBER) < (*(*parentNode).getData())){
+	  if ((*parentNode).getLeft() == NULL){
                 Node* newNode = new Node();
-                newNode -> setData(NUMBER);
-                newNode -> setParent(parentNode);
-                parentNode -> setLeft(newNode);
+                (*newNode).setData(NUMBER);
+                (*newNode).setParent(parentNode);
+                (*parentNode).setLeft(newNode);
                 adjust(root, newNode);
             }            
-            else
-            {
-                add(root, parentNode -> getLeft(), NUMBER);
+            else{
+	      add(root, (*parentNode).getLeft(), NUMBER);
             }
         }
         else {
-        if (parentNode -> getRight() == NULL)
-        {
+	  if ((*parentNode).getRight() == NULL){
             Node* newNode = new Node();
-            newNode -> setData(NUMBER);
-            newNode -> setParent(parentNode);
-            parentNode -> setRight(newNode);
+            (*newNode).setData(NUMBER);
+            (*newNode).setParent(parentNode);
+            (*parentNode).setRight(newNode);
             adjust(root, newNode);
         }
-          else
-          {
-            add(root, parentNode -> getRight(), NUMBER);
+          else{
+            add(root, (*parentNode).getRight(), NUMBER);
           }
         }
       }
