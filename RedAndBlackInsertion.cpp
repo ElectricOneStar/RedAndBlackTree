@@ -300,14 +300,14 @@ void maxSize(char* input, int* size){ // this function gets the size of the tree
 }
 
 void setGrandparent(Node* n){
-   n-> getParent() -> setParent(n);
+  (*(*n).getParent()).setParent(n);
 }
 
 
 
 //getting the grandparent
 Node* getGrandparent(Node* n){
-   return n -> getParent() -> getParent();
+  return (*(*n).getParent()).getParent();
 }
  
 void rightRotate(Node** header, Node* temporary){
@@ -343,7 +343,7 @@ void leftRotate(Node** header, Node* next){
          *header = current; //The new header is now the current
        }
    else{
-         if(next == next -> getParent() -> getLeft()){
+     if(next == (*(*next).getParent()).getLeft()){
            (*(*next).getParent()).setLeft(current);
          }
          else{
