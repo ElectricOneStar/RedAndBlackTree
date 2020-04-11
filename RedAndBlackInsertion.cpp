@@ -111,14 +111,6 @@ int main(){ // initialization of variables
     //cout << "added data" << (*(*two).getData()) << endl;
     //Node*
      add(&header, header, lol);
-    //  Add(header, two);
-    // adjust(&header, two);
-    //  cout << (*(*getParent(header, two, Parent)).getData()) << endl;
-    //fixViolation(header, two);
-    // balance2(header, two);
-    // cout << "there" << endl;
-    //adjust(header, two);
-    // FixTree(header, two, getUncle(header, two, Uncle), getGrandParent(header, two, GrandParent), getParent(header, two, Parent));
     cout << "Added" << endl;
   }
     if(strcmp(inputFunction, "DELETE") == 0){ // delete function that deletes a node form tree
@@ -298,18 +290,13 @@ void maxSize(char* input, int* size){ // this function gets the size of the tree
     }
   }
 }
-
 void setGrandparent(Node* n){
   (*(*n).getParent()).setParent(n);
 }
-
-
-
 //getting the grandparent
 Node* getGrandparent(Node* n){
   return (*(*n).getParent()).getParent();
-}
- 
+} 
 void rightRotate(Node** header, Node* temporary){
    Node* nextNode = temporary -> getLeft();
    (*temporary).setLeft((*nextNode).getRight());
@@ -375,12 +362,12 @@ void adjust(Node** header, Node* nnew){
            }
    else{
      if ((*getGrandparent(nnew)).getLeft() != NULL && (*(*getGrandparent(nnew)).getLeft()).getColor() == 0){
-               Node* inputting = new Node();
-	       inputting = (*getGrandparent(nnew)).getLeft();
+               Node* in = new Node();
+	       in = (*getGrandparent(nnew)).getLeft();
                (*(*nnew).getParent()).setColor(1);
-	       (*inputting).setColor(1);
+	       (*in).setColor(1);
 	       (*getGrandparent(nnew)).setColor(0); //setting colors
-               nnew = getGrandparent(nnew);
+               nnew = getGrpandparent(nnew);
            }
            else{
 	     if (nnew == (*(*nnew).getParent()).getLeft()){
@@ -393,7 +380,7 @@ void adjust(Node** header, Node* nnew){
            }
         }
     }
-    (*(*header)).setColor(2);
+    (*(*header)).setColor(1);
 }
   void add (Node** root, Node* parentNode, int* NUMBER){
     if ((*(*parentNode).getData()) == 0){
