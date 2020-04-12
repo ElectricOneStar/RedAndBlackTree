@@ -101,6 +101,25 @@ int main(){ // initialization of variables
   //cout << "First Number: " << (*Parce(input, index, counterOne, wordCounter, parced)) << endl;
   BuildTree(input, index, counterOne, wordCounter, parced, size, header); // builds the tree
   do{
+    //   Node* one = new Node;
+    //  (*one).setData(Parce(input, index, counterOne, wordCounter, parced)); // creates the new node
+    // cout << (*Parce(input, index, counterOne, wordCounter, parced)) << endl;
+    int* data = new int;
+    (*data) = (*Parce(input, index, counterOne, wordCounter, parced));
+    //  cout << (*data) << endl;
+    //add(&header, header, data); // adds a new node to the tree
+
+    add(&header, header, data);
+    //cout << (*data) << endl;
+    //(*one).setColor(BLACK);
+    //cout << "data" << (*(*one).getData()) << endl;
+    // Add(header, one); // adds the new node
+
+    // fixViolation(header, one);
+    (*index)++;
+  }
+  while((*index) != (*size)+1); // continues to do this until all the numbers from i
+  do{
   cout << "The RedAndBlack is now created. you can ADD, DELETE, SEARCH, or PRINT from the tree. You can also type QUIT if you want to quit the program" << endl; 
   cin.get(inputFunction, 20); // gets the function that the users want to do
   //cin.ignore();
@@ -113,8 +132,29 @@ int main(){ // initialization of variables
     cin.clear();
     cin.ignore();
     int* lol = new int;
-    (*lol) = (int)(*additionInput) - 48;
-    cout << (*lol) << endl;
+    ///(*counterOne) = 0;
+    (*index) = 1;
+    (*wordCounter) = 0;
+      for(int i = 0; i < strlen(additionInput); i++){
+    if(additionInput[i] != ' ' && (*wordCounter) != 3){ // add to integer up to 3 digits
+      (*wordCounter)++;
+	if((*wordCounter) == 1){
+	  (*lol) = (int)additionInput[i]-48;
+	}
+      	if((*wordCounter) == 2){
+	  (*lol) = (int)additionInput[i]-48 + (*lol)*10;
+	}
+	if((*wordCounter) == 3){
+	  (*lol) = (int)additionInput[i]-48 + (*lol)*10;
+	}
+
+      
+    }
+      }
+    //  (*lol) = (*Parce(input, index, counterOne, wordCounter, parced));
+    //(*lol) = (int)(*additionInput) - 48;
+    //cout << (*lol) << endl;
+    //Parce(input, index, counterOne, wordCounter, parced);
       //   Node* two = new Node; // creates the new node
     //(*two).setData(Parce(additionInput, index, counterOne, wordCounter, parced));
     //cout << "added data" << (*(*two).getData()) << endl;
@@ -200,18 +240,32 @@ void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* 
   // cout << "build tree" << endl;
   // cout << (*size) << endl;
   // Node* header = new Node;
+  
   int* RED = new int;
   (*RED) = 0;
   int* BLACK = new int;
   (*BLACK) = 1;
-  (*header).setData(Parce(input, index, counterOne, wordCounter, parced)); // creates the head
+  int* dat = new int;
+  (*dat) = (*Parce(input, index, counterOne, wordCounter, parced));
+  (*header).setData(dat); // creates the head
+  //cout << (*dat) << endl;
+  // cout << (*Parce(input, index, counterOne, wordCounter, parced)) << endl;
   (*header).setColor((*BLACK));
-  (*index)++; 
+ 
+(*index)++; 
   //cout << "head data" << (*(*header).getData()) << endl;
-  do{
+/*
+ do{
     //   Node* one = new Node;
     //  (*one).setData(Parce(input, index, counterOne, wordCounter, parced)); // creates the new node
-    add(&header, header, Parce(input, index, counterOne, wordCounter, parced)); // adds a new node to the tree
+    // cout << (*Parce(input, index, counterOne, wordCounter, parced)) << endl;
+    int* data = new int;
+    (*data) = (*Parce(input, index, counterOne, wordCounter, parced));
+    cout << (*data) << endl;
+    //add(&header, header, data); // adds a new node to the tree
+
+    add(&header, header, data);
+    //cout << (*data) << endl;
     //(*one).setColor(BLACK);
     //cout << "data" << (*(*one).getData()) << endl;
     // Add(header, one); // adds the new node
@@ -219,32 +273,10 @@ void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* 
     // fixViolation(header, one);
     (*index)++;
   }
-  while((*index) != (*size)+1); // continues to do this until all the numbers from input are put into the tree
-}
-/*
-void Add(Node* header, Node* add){ // this funcitons adds a node to the list
-  // cout << "add" << endl;
-  if((*(*add).getData()) <= (*(*header).getData()) && (*header).getLeft() != NULL){ // this node should go to the left because it is <= current node
-    Add((*header).getLeft(), add);
-  }
-  //if((*(*header).getData()) >= (*(*add).getData()) && (*header).getLeft() == NULL){
-     if((*(*add).getData()) <= (*(*header).getData()) && (*header).getLeft() == NULL){
-       (*header).setLeft(add);
-     } // add it to the end
-
-     //if((*(*header).getData()) < (*(*add).getData()) &&(*header).getLeft() != NULL){
-     if((*(*add).getData()) > (*(*header).getData()) && (*header).getRight() != NULL){ // this node should go to the right because it is > than current node
-	Add((*header).getRight(), add);
-      } 
-      // if((*(*header).getData()) < (*(*add).getData()) &&(*header).getLeft() == NULL){
-  if((*(*add).getData()) > (*(*header).getData()) && (*header).getRight() == NULL){
-    (*header).setRight(add);
-  } // add it to the end
-   
-  /// adjust(&header, add);
-
-}
+  while((*index) != (*size)+1);
 */
+  // continues to do this until all the numbers from input are put into the tree
+}
 void Print(Node* header, int length, int count, int i){ // this funciton prints the tree where the parent and child relationship is clear
   //cout << "print" << endl;
    int left = 2*i;
