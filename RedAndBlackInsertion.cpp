@@ -1,9 +1,16 @@
+/*
+RedAndBlackTree Insertion By Andrew Thomas 4/12/20 Mr.Galbriath C++ Class. Red And Black Tree. This will correctly build a red and black tree and will properally add nodes to the tree. one can also search for a value on the tree. 
+Sources:
+https://en.wikipedia.org/wiki/Red%E2%80%93black_tree
+https://www.andrew.cmu.edu/user/mm6/95-771/examples/RedBlackTreeProject/dist/javadoc/redblacktreeproject/RedBlackTree.html
+ 
+*/
 #include <iostream>
 
 #include<cstring>
 #include<fstream>
 #include "Node.h"
-using namespace std;
+using namespace std; // functions below
 int* Parce(char* input, int* index, int* counterOne, int* wordCounter, int* parced); // functions
 void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* parced, int* size, Node* header);
 //void Add(Node* header, Node* add);
@@ -20,15 +27,17 @@ void fixViolation(Node* &header, Node* &pointer);
 void balance(Node* &head, Node* &curr);
 void balance2(Node* &head, Node* &curr);
 void add (Node** root, Node* parentNode, int* NUMBER);
-void adjust(Node** header, Node* nnew);
+void fixIssue(Node** header, Node* nnew);
 void leftRotate(Node** header, Node* next);
 void rightRotate(Node** header, Node* temporary);
 void setGrandparent(Node* n);
 Node* getGrandparent(Node* n);
+void add (Node** header, Node* parent, int* in);
+
 int main(){ // initialization of variables
   //HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
   //SetConsoleTextAttribute(hStdOut, FOREGROUND_RED | BACKGROUND_BLUE | BACKGROUND_GREEN | BACKGROUND_RED);
-  char* inputType = new char[20];
+  char* inputType = new char[20]; // initializing variables
   char* input = new char[500];
   char* FileName = new char[20];
   char* inputFunction = new char[20];
@@ -65,7 +74,7 @@ int main(){ // initialization of variables
   */
 (*index) = 1;
   do{
-  cout << "Welcome to Binary Tree Please Select your Input: User or File" << endl;
+  cout << "Welcome to Red and Black Tree Please Select your Input: User or File" << endl;
   cin.get(inputType, 20); // will continue to ask for type of input
   cin.clear();
   cin.ignore();
@@ -92,7 +101,7 @@ int main(){ // initialization of variables
   //cout << "First Number: " << (*Parce(input, index, counterOne, wordCounter, parced)) << endl;
   BuildTree(input, index, counterOne, wordCounter, parced, size, header); // builds the tree
   do{
-  cout << "The Binary tree is now created. you can ADD, DELETE, SEARCH, or PRINT from the tree. You can also type QUIT if you want to quit the program" << endl; 
+  cout << "The RedAndBlack is now created. you can ADD, DELETE, SEARCH, or PRINT from the tree. You can also type QUIT if you want to quit the program" << endl; 
   cin.get(inputFunction, 20); // gets the function that the users want to do
   //cin.ignore();
   cin.clear();
@@ -110,7 +119,7 @@ int main(){ // initialization of variables
     //(*two).setData(Parce(additionInput, index, counterOne, wordCounter, parced));
     //cout << "added data" << (*(*two).getData()) << endl;
     //Node*
-     add(&header, header, lol);
+    add(&header, header, lol); // adds to the tree
     cout << "Added" << endl;
   }
     if(strcmp(inputFunction, "DELETE") == 0){ // delete function that deletes a node form tree
@@ -202,7 +211,7 @@ void BuildTree(char* input, int* index, int* counterOne, int* wordCounter, int* 
   do{
     //   Node* one = new Node;
     //  (*one).setData(Parce(input, index, counterOne, wordCounter, parced)); // creates the new node
-    add(&header, header, Parce(input, index, counterOne, wordCounter, parced));
+    add(&header, header, Parce(input, index, counterOne, wordCounter, parced)); // adds a new node to the tree
     //(*one).setColor(BLACK);
     //cout << "data" << (*(*one).getData()) << endl;
     // Add(header, one); // adds the new node
@@ -290,127 +299,127 @@ void maxSize(char* input, int* size){ // this function gets the size of the tree
     }
   }
 }
-void setGrandparent(Node* n){
+void setGrandparent(Node* n){ // sets the grandparent
   (*(*n).getParent()).setParent(n);
 }
 //getting the grandparent
-Node* getGrandparent(Node* n){
+Node* getGrandparent(Node* n){ // gets the grandparent
   return (*(*n).getParent()).getParent();
 } 
-void rightRotate(Node** header, Node* temporary){
-   Node* nextNode = temporary -> getLeft();
+void rightRotate(Node** header, Node* temporary){ // rotates right
+  Node* nextNode = temporary -> getLeft(); // next node is left of temp
    (*temporary).setLeft((*nextNode).getRight());
    if((*nextNode).getRight() != NULL){
-     (*(*nextNode).getRight()).setParent(temporary);
+     (*(*nextNode).getRight()).setParent(temporary); // next nodes right new parent is temp
        }
-   (*nextNode).setParent((*temporary).getParent());
-   if(temporary == (*header)){
-         (*header) = nextNode;
+   (*nextNode).setParent((*temporary).getParent()); // nextnodes parent is temp
+   if(temporary == (*header)){ // if header
+     (*header) = nextNode; // header is now next node
   }
-   else{
-     if(temporary == (*(*temporary).getParent()).getLeft()){
-       (*(*temporary).getParent()).setLeft(nextNode);
+   else{ // temp is not header
+     if(temporary == (*(*temporary).getParent()).getLeft()){ // temp is left
+       (*(*temporary).getParent()).setLeft(nextNode); // temps parents new left is newnode
                  }
-     else if (temporary != (*(*temporary).getParent()).getLeft()){
-       (*(*temporary).getParent()).setRight(nextNode);
+     else if (temporary != (*(*temporary).getParent()).getLeft()){ // temp is right
+       (*(*temporary).getParent()).setRight(nextNode); // temps parents new right is new node
 		  }
        }
-   nextNode -> setRight(temporary);
-   temporary -> setParent(nextNode);
+   nextNode -> setRight(temporary); // new nodes right is temp
+   temporary -> setParent(nextNode); // temp parent is next node
 }
  
-void leftRotate(Node** header, Node* next){
-  Node* current = (*next).getRight();
-  (*next).setRight((*current).getLeft());
+void leftRotate(Node** header, Node* next){ // rotates left
+  Node* current = (*next).getRight();  // current is next's right
+  (*next).setRight((*current).getLeft()); //next new right is currents left
   if((*current).getLeft() != NULL){
-    (*(*current).getLeft()).setParent(next); //set current's left to the parent of the next (the inputted node)
+    (*(*current).getLeft()).setParent(next);  // current left's parent is now next
    }
-  (*current).setParent((*next).getParent());
+  (*current).setParent((*next).getParent()); // current's parent is next's parent
    if(next == *header){
          *header = current; //The new header is now the current
        }
    else{
-     if(next == (*(*next).getParent()).getLeft()){
-           (*(*next).getParent()).setLeft(current);
+     if(next == (*(*next).getParent()).getLeft()){ // next is left
+       (*(*next).getParent()).setLeft(current); /// next's parents left is now current
          }
          else{
-           (*(*next).getParent()).setRight(current);
+           (*(*next).getParent()).setRight(current); // next is right and current is now right
          }
    }
-   (*current).setLeft(next);
-   (*next).setParent(current);
+   (*current).setLeft(next); // currents left is next
+   (*next).setParent(current); // nexts parent is current
 }
-void adjust(Node** header, Node* nnew){
-  while((*nnew).getParent() != NULL && (*(*nnew).getParent()).getColor() == 0 && nnew != (*header)){
-      if((*nnew).getParent() == (*getGrandparent(nnew)).getLeft()){
-      Node* next = (*getGrandparent(nnew)).getRight();
-	   if(next != NULL && (*next).getColor() == 0){
-	      (*(*nnew).getParent()).setColor(1);
-	      (*next).setColor(1);
-	      (*getGrandparent(nnew)).setColor(0);
-                nnew = getGrandparent(nnew);
+void fixIssue(Node** header, Node* nnew){ // fixes the tree after adding the node
+  while((*nnew).getParent() != NULL && (*(*nnew).getParent()).getColor() == 0 && nnew != (*header)){ // while nnew has a parent
+    if((*nnew).getParent() == (*getGrandparent(nnew)).getLeft()){ // if new's parent is nnew's left
+      Node* next = (*getGrandparent(nnew)).getRight(); // set next to the right of new's grandparent
+      if(next != NULL && (*next).getColor() == 0){ // next is not null
+	(*(*nnew).getParent()).setColor(1); // set parent color to 1
+	(*next).setColor(1); // next color is 1
+	      (*getGrandparent(nnew)).setColor(0); // sets parents color to 0
+	      nnew = getGrandparent(nnew); // recurse with grandparent
            }
            else{
-	     if(nnew == (*(*nnew).getParent()).getRight()){
-		      nnew = (*nnew).getParent();
-                           leftRotate(header, nnew);
+	     if(nnew == (*(*nnew).getParent()).getRight()){ // if neew is on right
+	       nnew = (*nnew).getParent(); // nnew is now its parent
+	       leftRotate(header, nnew); // left rotate
                     }
-		    (*(*nnew).getParent()).setColor(1);
-		    (*getGrandparent(nnew)).setColor(0);
-                   rightRotate(header, getGrandparent(nnew));
+	     (*(*nnew).getParent()).setColor(1); // set nnew parent color 1
+	     (*getGrandparent(nnew)).setColor(0);  // grandparents color 0
+	     rightRotate(header, getGrandparent(nnew)); // right roate
                    }
            }
-   else{
-     if ((*getGrandparent(nnew)).getLeft() != NULL && (*(*getGrandparent(nnew)).getLeft()).getColor() == 0){
+    else{// nnew is left
+      if ((*getGrandparent(nnew)).getLeft() != NULL && (*(*getGrandparent(nnew)).getLeft()).getColor() == 0){ // grandparents left exists
                Node* in = new Node();
-	       in = (*getGrandparent(nnew)).getLeft();
-               (*(*nnew).getParent()).setColor(1);
-	       (*in).setColor(1);
+	       in = (*getGrandparent(nnew)).getLeft(); // in is grandparents left
+               (*(*nnew).getParent()).setColor(1); //nnew parents color is now 1
+	       (*in).setColor(1); // in color is 1
 	       (*getGrandparent(nnew)).setColor(0); //setting colors
-               nnew = getGrpandparent(nnew);
+               nnew = getGrandparent(nnew); // nnew is now grandparent
            }
-           else{
+      else{ //grandparents left does not exist
 	     if (nnew == (*(*nnew).getParent()).getLeft()){
 		 nnew = (*nnew).getParent();
-                   rightRotate(header, nnew);
+		 rightRotate(header, nnew); // right roatate
                }
                (*(*nnew).getParent()).setColor(1);
 	       (*getGrandparent(nnew)).setColor(0);
-	       leftRotate(header, getGrandparent(nnew));
+	       leftRotate(header, getGrandparent(nnew)); // left rotate
            }
         }
     }
     (*(*header)).setColor(1);
 }
-  void add (Node** root, Node* parentNode, int* NUMBER){
-    if ((*(*parentNode).getData()) == 0){
-        (*parentNode).setColor(1);
-	(*parentNode).setData(NUMBER);
-      }
-      else{
-        if((*NUMBER) < (*(*parentNode).getData())){
-	  if ((*parentNode).getLeft() == NULL){
-                Node* newNode = new Node();
-                (*newNode).setData(NUMBER);
-                (*newNode).setParent(parentNode);
-                (*parentNode).setLeft(newNode);
-                adjust(root, newNode);
-            }            
-            else{
-	      add(root, (*parentNode).getLeft(), NUMBER);
-            }
+void add (Node** header, Node* parent, int* in){
+  if ((*(*parent).getData()) == 0){ // add to header
+       (*parent).setColor(1);
+	(*parent).setData(in);
+     }
+     else{
+       if((*in) <= (*(*parent).getData())){ // smaller data
+	 if ((*parent).getLeft() == NULL){ // end of list
+	    Node* newNode = new Node(); // add node
+               (*newNode).setData(in);
+               (*newNode).setParent(parent);
+               (*parent).setLeft(newNode);
+               fixIssue(header, newNode);
+           }           
+	 else{ // not end so recurse
+      add(header, (*parent).getLeft(), in);
+           }
+       }
+       else { // greater 
+	 if ((*parent).getRight() == NULL){ // end of list 
+           Node* newNode = new Node(); // add node
+           (*newNode).setData(in);
+           (*newNode).setParent(parent);
+           (*parent).setRight(newNode);
+           fixIssue(header, newNode);
+       }
+         else{ // not end so recurse
+           add(header, (*parent).getRight(), in);
         }
-        else {
-	  if ((*parentNode).getRight() == NULL){
-            Node* newNode = new Node();
-            (*newNode).setData(NUMBER);
-            (*newNode).setParent(parentNode);
-            (*parentNode).setRight(newNode);
-            adjust(root, newNode);
-        }
-          else{
-            add(root, (*parentNode).getRight(), NUMBER);
-          }
-        }
-      }
-    }
+  }
+     }
+   }
